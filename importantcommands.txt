@@ -1,0 +1,7 @@
+first open the project file (studyverse)
+then win + r and then write cmd and then enter
+then ctrl + shift + N
+then write cd C:\Users\MAHI\OneDrive\Desktop\project\studyverse-ai\studyverse
+then write node server.js
+then ctrl + click on the link 
+done

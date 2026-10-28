@@ -1,0 +1,14 @@
+{
+  "name": "studyverse",
+  "version": "1.4.0",
+  "description": "StudyVerse: Scroll Keepers, a gamified study app with accounts",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "dev": "node --watch --disable-warning=ExperimentalWarning server.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "license": "MIT"
+}

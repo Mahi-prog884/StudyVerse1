@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Log in · StudyVerse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Pixelify+Sans:wght@500;700&display=swap">
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/theme-init.js"></script>
+</head><body>
+<main class="auth">
+  <div class="box auth-card">
+    <div class="logo">Study<b>Verse</b></div>
+    <h1 id="title">Welcome back</h1>
+    <p class="dim" id="sub">Log in to continue your quest.</p>
+    <div class="tabs" role="tablist" aria-label="Account">
+      <button type="button" role="tab" id="tabLogin" aria-selected="true">Log in</button>
+      <button type="button" role="tab" id="tabReg" aria-selected="false">Sign up</button>
+    </div>
+    <form id="f" novalidate>
+      <div class="field">
+        <label class="l" for="u">Hero name</label>
+        <input type="text" id="u" autocomplete="username" maxlength="24" required>
+        <p class="hint" id="uh" hidden>3–24 letters, numbers, _ or -</p>
+      </div>
+      <div class="field">
+        <label class="l" for="p">Password</label>
+        <input type="password" id="p" autocomplete="current-password" maxlength="128" required>
+        <p class="hint" id="ph" hidden>At least 8 characters</p>
+      </div>
+      <div class="row" style="margin-top:20px"><button class="btn" id="go" type="submit">Log in</button></div>
+      <p class="err" id="err" role="alert"></p>
+    </form>
+  </div>
+</main>
+<script src="/js/login.js"></script>
+</body></html>

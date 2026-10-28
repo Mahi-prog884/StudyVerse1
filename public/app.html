@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudyVerse: Scroll Keepers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Pixelify+Sans:wght@500;700&display=swap">
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/theme-init.js"></script>
+</head><body>
+<header><div class="bar"><div class="logo">Study<b>Verse</b></div><div class="lv" id="lvTag">LV 1</div><span class="who sm"><span class="dim">Hero:</span> <b id="who"></b></span><button class="btn alt hbtn" onclick="theme()">Day/Night</button><button class="btn alt hbtn" onclick="logout()">Log out</button><nav id="nav" aria-label="Main"></nav></div></header>
+<div id="toast" role="status"></div>
+<main>
+<section class="page on" id="camp">
+<div class="box"><h1>Your notes are the dungeon.</h1><p style="margin-top:12px;max-width:56ch">Load a chapter as a scroll. Fight the boss it hides, collect the words you master, and rest at the campfire. Every win levels you up.</p><div class="row" style="margin-top:18px"><button class="btn" id="go"></button></div></div>
+<div class="cols" style="margin-bottom:26px"><div class="box"><h3 id="rank"></h3><div class="xp"><i id="xpb"></i></div><p class="sm dim" id="xpt"></p><div class="hearts" id="hh" style="margin-top:8px">♥♥♥</div><p class="sm dim" id="streak"></p></div>
+<div class="box"><h3>Today’s quests</h3><div id="quests" style="margin-top:8px"></div></div></div>
+<h2 style="margin-bottom:16px">World map</h2>
+<div class="cols" id="map" style="margin-bottom:26px"></div>
+<div class="box"><h3>Adventure log</h3><div class="log" id="log" style="margin-top:8px"></div></div></section>
+
+<section class="page" id="library"><h1 style="margin-bottom:20px">The Library</h1>
+<div class="box"><div class="field"><label class="l" for="pdf">Upload a PDF scroll</label><input type="file" id="pdf" accept="application/pdf,.pdf"><div class="row" style="margin-top:12px"><button class="btn" onclick="readPDF()">Read PDF</button></div><p class="sm dim" id="ust" style="margin-top:10px" role="status"></p></div>
+<div class="field"><label class="l" for="paste">Or paste your notes</label><textarea id="paste" placeholder="Paste a chapter or class notes here…"></textarea><div class="row" style="margin-top:12px"><button class="btn" onclick="usePaste()">Use this text</button></div></div>
+<div class="note">PDF reading loads a library from the internet. Scanned PDFs (pictures of pages) can’t be read without OCR, so paste the text instead.</div></div>
+<div class="box"><h3>Scroll summary</h3><p class="sm dim" id="srcName" style="margin:4px 0 10px">No scroll loaded.</p><p id="sumBody"></p><h3 style="margin-top:20px">Monster names</h3><div class="chips" id="terms" style="margin-top:10px"></div>
+<div class="row" style="margin-top:18px"><button class="btn alt" onclick="dl()">Download notes</button><button class="btn red" onclick="show('arena')">Enter the arena</button><button class="btn" id="aiSum" onclick="aiSummarize()" hidden>Summarize with AI</button></div><p class="sm dim" id="aiSt" role="status" style="margin-top:10px"></p><div class="note" id="sumNote">The summary is extractive: it picks the sentences richest in key terms.</div></div></section>
+
+<section class="page" id="arena"><h1 style="margin-bottom:20px">The Arena</h1><div class="box" id="arenaBody"></div></section>
+
+<section class="page" id="book"><h1 style="margin-bottom:20px">The Spellbook</h1>
+<div class="box"><div class="row" style="justify-content:space-between"><span class="chip" id="cc">No cards</span><span class="sm dim" id="cm"></span></div><div class="flash" id="flash" aria-live="polite"></div>
+<div class="row" style="justify-content:center"><button class="btn alt" onclick="flip()">Flip card</button><button class="btn alt" onclick="rate(false)">Study again</button><button class="btn" onclick="rate(true)">Mastered</button></div></div>
+<div class="box"><h3>Words you own</h3><div class="chips" id="owned" style="margin-top:10px"></div></div></section>
+
+<section class="page" id="history"><h1 style="margin-bottom:20px">History</h1>
+<div class="box"><p class="sm dim" style="margin-bottom:12px">Every PDF or set of notes you load is saved to your account, together with its AI summary and Sage chat. Open one to continue where you left off.</p><div id="histList"></div>
+<div class="note">Up to 50 documents are kept. Scanned PDFs without text can't be saved.</div></div></section>
+
+<section class="page" id="sage"><h1 style="margin-bottom:20px">The Sage</h1>
+<div class="box"><p class="sm dim" id="sageSt" style="margin-bottom:12px"></p><div class="chat" id="chat" aria-live="polite"></div>
+<label class="l" for="sq" style="margin-top:14px">Ask the Sage</label><textarea id="sq" style="min-height:70px" maxlength="1500" placeholder="Ask about your notes…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sageSend()}"></textarea>
+<div class="row" style="margin-top:12px"><button class="btn" id="sageGo" onclick="sageSend()">Ask</button><button class="btn alt" onclick="sageClear()">Clear chat</button></div>
+<div class="note">The Sage is an AI model. It can make mistakes, so check important facts against your notes.</div></div></section>
+
+<section class="page" id="board"><h1 style="margin-bottom:20px">Leaderboard</h1>
+<div class="box"><p class="sm dim" style="margin-bottom:12px">Top 20 heroes by total XP.</p><div id="boardList"></div><p class="sm" id="boardMe" style="margin-top:12px"></p>
+<div class="note">XP is reported by each player's browser, so treat the board as friendly competition. You can hide yourself in Profile.</div></div></section>
+
+<section class="page" id="me"><h1 style="margin-bottom:20px">Profile</h1>
+<div class="box" id="profInfo"></div>
+<div class="box stack" style="margin-top:20px"><h2 class="px" style="margin-bottom:10px">Privacy</h2>
+<label class="chk"><input type="checkbox" id="boardOpt" onchange="setBoardOpt()"> Show my name on the leaderboard</label><p class="sm" id="boardMsg" role="status"></p></div>
+<div class="box stack" style="margin-top:20px"><h2 class="px" style="margin-bottom:10px">Change password</h2>
+<label class="l" for="pwCur">Current password</label><input type="password" id="pwCur" autocomplete="current-password" maxlength="128">
+<label class="l" for="pwNew" style="margin-top:12px">New password (8+ characters)</label><input type="password" id="pwNew" autocomplete="new-password" maxlength="128">
+<label class="l" for="pwNew2" style="margin-top:12px">Repeat new password</label><input type="password" id="pwNew2" autocomplete="new-password" maxlength="128">
+<div class="row" style="margin-top:14px"><button class="btn" id="pwGo" onclick="changePw()">Change password</button></div><p class="sm" id="pwMsg" role="status" style="margin-top:10px"></p>
+<p class="sm dim">Changing it logs you out on all your other devices.</p></div>
+<div class="box stack danger" style="margin-top:20px"><h2 class="px" style="margin-bottom:10px">Delete account</h2>
+<p class="sm">This permanently deletes your hero, XP, notes and badges.</p>
+<label class="l" for="delPw" style="margin-top:12px">Your password</label><input type="password" id="delPw" autocomplete="current-password" maxlength="128">
+<div class="row" style="margin-top:14px"><button class="btn red" onclick="deleteAcct()">Delete my account</button></div><p class="sm" id="delMsg" role="status" style="margin-top:10px"></p></div>
+</section>
+
+<section class="page" id="fire"><h1 style="margin-bottom:20px">The Campfire</h1>
+<div class="box"><label class="l" for="dur">Rest length</label><select id="dur" style="max-width:260px"><option value="5">5 minutes</option><option value="15">15 minutes</option><option value="25" selected>25 minutes</option></select>
+<div class="timer" id="tm" role="timer">25:00</div><div class="xp"><i id="tb"></i></div>
+<div class="row" style="margin-top:14px"><button class="btn" onclick="tStart()">Light the fire</button><button class="btn alt" onclick="tPause()">Pause</button><button class="btn alt" onclick="tReset()">Reset</button></div>
+<div class="note">Study without leaving this tab. A finished session gives 10 XP. Time is checked against your clock, so background tabs stay accurate.</div></div></section>
+
+<section class="page" id="trophy"><h1 style="margin-bottom:20px">Trophy Hall</h1><div class="box" id="stats"></div><div class="badges" id="badges"></div>
+<div class="row" style="margin-top:28px"><button class="btn alt" onclick="clearAll()">Reset all progress</button></div></section>
+</main>
+<script src="/js/app.js"></script></body></html>
